@@ -278,31 +278,31 @@
         gap: 10px;
       }
 
-    .scale-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: nowrap;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: #eee7f1;
-      white-space: nowrap;
-    }
+      .scale-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #eee7f1;
+        white-space: nowrap;
+      }
 
-    .scale-list strong,
-    .scale-list span {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .scale-list strong,
+      .scale-list span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .scale-list span {
-      text-align: right;
-      color: var(--muted);
-    }
+      .scale-list span {
+        text-align: right;
+        color: var(--muted);
+      }
 
       .config {
         margin-top: 22px;
@@ -341,6 +341,105 @@
         .hero,
         .panel {
           padding: 24px 20px;
+        }
+
+        .meter-shell,
+        .showcase,
+        .config {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 620px) {
+        body {
+          padding: 18px 12px;
+        }
+
+        .card {
+          border-radius: 22px;
+        }
+
+        .hero {
+          padding: 22px 18px 20px;
+        }
+
+        .eyebrow {
+          letter-spacing: 0.18em;
+          font-size: 0.66rem;
+        }
+
+        h1 {
+          font-size: clamp(2.3rem, 15vw, 3.6rem);
+        }
+
+        .subtitle {
+          font-size: 0.96rem;
+          line-height: 1.5;
+        }
+
+        .panel {
+          padding: 18px;
+        }
+
+        .score {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+        }
+
+        .score-label {
+          padding-bottom: 0;
+        }
+
+        .classification strong {
+          font-size: 1.25rem;
+        }
+
+        .playlist a {
+          display: inline-block;
+          max-width: 100%;
+          overflow-wrap: anywhere;
+        }
+
+        .scale-list li {
+          gap: 8px;
+          padding: 10px 12px;
+          font-size: 0.9rem;
+        }
+
+        iframe {
+          min-height: 300px;
+        }
+      }
+
+      @media (max-width: 420px) {
+        body {
+          padding: 12px 8px;
+        }
+
+        .hero,
+        .panel {
+          padding: 16px;
+        }
+
+        .meter-shell,
+        .showcase,
+        .config,
+        .classification,
+        .playlist {
+          padding: 14px;
+        }
+
+        .score-value {
+          font-size: 2.7rem;
+        }
+
+        .scale-list li {
+          font-size: 0.82rem;
+        }
+
+        iframe {
+          min-height: 280px;
         }
       }
     </style>
@@ -417,8 +516,8 @@
     </main>
 
     <script>
-      const emoRate = 0.85;
-      const spotifyPlaylistId = "2gbmIBWWM0pRUdld8e7IEG";
+      const emoRate = 0.78;
+      const spotifyPlaylistId = "37i9dQZF1DX7qK8ma5wgG1";
 
       const classifications = [
         { max: 0.2, label: "Happy Vibes ☀️" },
