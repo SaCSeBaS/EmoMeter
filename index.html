@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emo Meter</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <style>
       :root {
         --bg: #09090d;
@@ -406,7 +406,6 @@
           padding: 10px 12px;
           font-size: 0.9rem;
         }
-
       }
 
       @media (max-width: 420px) {
@@ -434,7 +433,6 @@
         .scale-list li {
           font-size: 0.82rem;
         }
-
       }
     </style>
   </head>
@@ -499,11 +497,21 @@
             <h2>Emo Scale</h2>
             <ul class="scale-list">
               <li><strong>0% - 20%</strong> <span>Happy vibes ☀️</span></li>
-              <li><strong>20% - 40%</strong> <span>Slightly Emotional 🌤️</span></li>
+              <li>
+                <strong>20% - 40%</strong> <span>Slightly Emotional 🌤️</span>
+              </li>
               <li><strong>40% - 60%</strong> <span>Sad 😔</span></li>
               <li><strong>60% - 80%</strong> <span>Very Emo 🥀</span></li>
               <li><strong>80% - 100%</strong> <span>Certified Emo 🖤</span></li>
             </ul>
+          </section>
+          <section>
+            <div class="classification">
+              <small>How Emo You Truly Are…</small>
+              <p class="subtitle" id="comments">
+                Loading your emo way...
+              </p>
+            </div>
           </section>
         </aside>
       </section>
@@ -512,6 +520,7 @@
     <script>
       const emoRate = 0.76;
       const spotifyPlaylistId = "62CMv8LSXKq4Ji8t9qFOAe";
+      const playlistComments = "Comments about your emo playlist 123."
 
       const classifications = [
         { max: 0.2, label: "Happy Vibes ☀️" },
@@ -526,10 +535,13 @@
         classifications.find((item) => normalizedRate <= item.max) ||
         classifications[classifications.length - 1];
 
-      document.getElementById("emoRateValue").textContent = (normalizedRate.toFixed(2) * 100) + "%";
+      document.getElementById("emoRateValue").textContent =
+        normalizedRate.toFixed(2) * 100 + "%";
       document.getElementById("classificationText").textContent =
         currentClassification.label;
-      document.getElementById("emoBarFill").style.width = (normalizedRate * 100).toFixed(0) + "%";
+      document.getElementById("emoBarFill").style.width =
+        (normalizedRate * 100).toFixed(0) + "%";
+      document.getElementById("comments").textContent = playlistComments;
 
       const playlistUrl =
         "https://open.spotify.com/playlist/" + spotifyPlaylistId;
