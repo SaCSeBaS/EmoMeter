@@ -451,6 +451,10 @@
 
       function clearSuccessMessage() {}
 
+      function showSubmissionError(message) {
+        spotifyUrlError.textContent = message;
+      }
+
       function resetFormAfterSuccess() {
         form.reset();
         clearFieldError(emailInput, emailError);
@@ -523,7 +527,7 @@
         }
       });
 
-      form.addEventListener("submit", (event) => {
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const isEmailValid = validateEmail();
@@ -543,9 +547,21 @@
         targetUrl.searchParams.set("email", email);
         targetUrl.searchParams.set("spotify_url", spotifyUrl);
 
-        openSuccessModal(email);
+        showSubmissionError("");
 
-        window.open(targetUrl.toString(), "_blank");
+        try {
+          const response = await fetch(targetUrl.toString(), { method: "GET" });
+
+          if (!response.ok) {
+            throw new Error("Webhook request failed");
+          }
+
+          openSuccessModal(email);
+        } catch (error) {
+          showSubmissionError(
+            "Could not submit your playlist right now. Please try again.",
+          );
+        }
       });
     </script>
   </body>
