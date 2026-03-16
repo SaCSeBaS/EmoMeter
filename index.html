@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Emo Meter</title>
+    <title>Emo Meter Input</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <style>
       :root {
@@ -119,8 +119,6 @@
 
       .content {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 0;
       }
 
       .panel {
@@ -131,143 +129,139 @@
         border-left: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      .meter-shell {
+      .form-shell,
+      .info-shell {
         border: 1px solid rgba(255, 255, 255, 0.08);
         background: rgba(255, 255, 255, 0.03);
         border-radius: 22px;
         padding: 24px;
       }
 
-      .score {
-        display: flex;
-        align-items: end;
-        gap: 12px;
-        margin-bottom: 18px;
+      .field {
+        margin-bottom: 16px;
       }
 
-      .score-value {
-        font-size: clamp(3rem, 9vw, 5rem);
-        line-height: 0.9;
-        color: #fff4fb;
-      }
-
-      .score-label {
-        color: var(--muted);
-        font-style: italic;
-        padding-bottom: 8px;
-      }
-
-      .bar {
+      #inputForm {
         width: 100%;
-        height: 18px;
-        border-radius: 999px;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      .bar-fill {
-        height: 100%;
-        width: 0%;
-        border-radius: inherit;
-        background: linear-gradient(
-          90deg,
-          #ffd86b 0%,
-          #ff9f7a 20%,
-          #6a85ff 40%,
-          #3b0a45 60%,
-          #1a001a 80%,
-          #000000 100%
-        );
-        box-shadow: 0 0 20px rgba(255, 77, 141, 0.28);
-        transition: width 600ms ease;
-      }
-
-      .classification {
-        margin: 22px 0 0;
-        padding: 16px 18px;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.04);
-      }
-
-      .classification small,
-      .playlist small,
-      .scale h2,
-      .config h2 {
+      label {
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         color: #d8d0df;
-        letter-spacing: 0.14em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         font-size: 0.74rem;
       }
 
-      .classification strong {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #fff;
-      }
-
-      .playlist {
-        margin-top: 18px;
-        padding: 16px 18px;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.02);
-      }
-
-      .showcase {
-        margin-top: 18px;
-        padding: 18px;
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background:
-          linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.05),
-            rgba(255, 255, 255, 0.02)
-          ),
-          rgba(0, 0, 0, 0.22);
-      }
-
-      .showcase small {
-        display: block;
-        margin-bottom: 12px;
-        color: #d8d0df;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        font-size: 0.74rem;
-      }
-
-      .showcase-frame {
-        border-radius: 18px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(0, 0, 0, 0.35);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      }
-
-      iframe {
-        display: block;
+      input {
         width: 100%;
-        min-height: 352px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.28);
+        color: var(--text);
+        font-size: 1rem;
+        padding: 12px 14px;
+      }
+
+      input::placeholder {
+        color: #9f96a8;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: rgba(255, 77, 141, 0.65);
+        box-shadow: 0 0 0 3px rgba(255, 77, 141, 0.14);
+      }
+
+      .input-error {
+        border-color: rgba(255, 106, 140, 0.9);
+        box-shadow: 0 0 0 3px rgba(255, 106, 140, 0.18);
+      }
+
+      .error-message {
+        margin: 8px 2px 0;
+        min-height: 1.2em;
+        color: #ff9fbc;
+        font-size: 0.86rem;
+        line-height: 1.4;
+      }
+
+      .submit-btn {
+        width: 100%;
         border: 0;
+        border-radius: 14px;
+        padding: 13px 16px;
+        color: #fff5fb;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+        box-shadow: 0 16px 30px rgba(123, 60, 255, 0.28);
       }
 
-      a {
-        color: #ff9cbe;
-        text-decoration: none;
+      .submit-btn:hover {
+        filter: brightness(1.06);
       }
 
-      a:hover {
-        color: #ffd2e2;
-        text-decoration: underline;
+      .note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.5;
       }
 
-      .scale h2,
-      .config h2 {
-        margin-top: 0;
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.62);
+        z-index: 20;
+      }
+
+      .modal.is-open {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(440px, 100%);
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(20, 20, 28, 0.96);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+        padding: 20px 18px;
+      }
+
+      .modal-title {
+        margin: 0 0 8px;
+        font-size: 1.2rem;
+        color: #8df5c0;
+      }
+
+      .modal-text {
+        margin: 0;
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .modal-actions {
+        margin-top: 16px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .modal-btn {
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 16px;
+        color: #fff5fb;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(135deg, var(--accent), var(--accent-soft));
       }
 
       .scale-list {
@@ -281,51 +275,16 @@
       .scale-list li {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        flex-wrap: nowrap;
         gap: 12px;
         padding: 12px 14px;
         border-radius: 14px;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.06);
         color: #eee7f1;
-        white-space: nowrap;
-      }
-
-      .scale-list strong,
-      .scale-list span {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .scale-list span {
-        text-align: right;
         color: var(--muted);
-      }
-
-      .config {
-        margin-top: 22px;
-        padding: 18px;
-        border-radius: 18px;
-        background: #08080c;
-        border: 1px solid rgba(255, 255, 255, 0.07);
-      }
-
-      pre {
-        margin: 0;
-        white-space: pre-wrap;
-        word-break: break-word;
-        color: #f8d8e8;
-        font-size: 0.95rem;
-        line-height: 1.6;
-      }
-
-      .footer-note {
-        margin-top: 16px;
-        color: var(--muted);
-        font-size: 0.94rem;
-        line-height: 1.6;
       }
 
       @media (max-width: 800px) {
@@ -343,9 +302,8 @@
           padding: 24px 20px;
         }
 
-        .meter-shell,
-        .showcase,
-        .config {
+        .form-shell,
+        .info-shell {
           padding: 18px;
         }
       }
@@ -380,32 +338,6 @@
         .panel {
           padding: 18px;
         }
-
-        .score {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 6px;
-        }
-
-        .score-label {
-          padding-bottom: 0;
-        }
-
-        .classification strong {
-          font-size: 1.25rem;
-        }
-
-        .playlist a {
-          display: inline-block;
-          max-width: 100%;
-          overflow-wrap: anywhere;
-        }
-
-        .scale-list li {
-          gap: 8px;
-          padding: 10px 12px;
-          font-size: 0.9rem;
-        }
       }
 
       @media (max-width: 420px) {
@@ -418,20 +350,9 @@
           padding: 16px;
         }
 
-        .meter-shell,
-        .showcase,
-        .config,
-        .classification,
-        .playlist {
+        .form-shell,
+        .info-shell {
           padding: 14px;
-        }
-
-        .score-value {
-          font-size: 2.7rem;
-        }
-
-        .scale-list li {
-          font-size: 0.82rem;
         }
       }
     </style>
@@ -442,117 +363,190 @@
         <p class="eyebrow">Are you a true emo?</p>
         <h1>Emo Meter</h1>
         <p class="subtitle">
-          A dramatic little dashboard that judges your playlist and decides
-          whether you're glowing in the sun or staring out a rainy window
-          rewriting your soul in lowercase...
+          Share your email and Spotify playlist URL to run your emo check...
         </p>
       </section>
 
       <section class="content">
-        <div class="panel">
-          <div class="meter-shell">
-            <div class="score">
-              <div class="score-value" id="emoRateValue">0.00</div>
-              <div class="score-label">E.R. (not emergency room, emo rate)</div>
-            </div>
-
-            <div class="bar" aria-label="Emo meter progress bar">
-              <div class="bar-fill" id="emoBarFill"></div>
-            </div>
-
-            <div class="classification">
-              <small>Your classification</small>
-              <strong id="classificationText">Loading mood...</strong>
-            </div>
-
-            <div class="playlist">
-              <small>Selected Spotify playlist</small>
-              <a id="playlistLink" href="#" target="_blank" rel="noreferrer"
-                >Open playlist</a
-              >
-            </div>
-
-            <div class="showcase">
-              <small>Playlist preview</small>
-              <div class="showcase-frame">
-                <iframe
-                  id="playlistPreview"
-                  title="Spotify playlist preview"
-                  allow="
-                    autoplay;
-                    clipboard-write;
-                    encrypted-media;
-                    fullscreen;
-                    picture-in-picture;
-                  "
-                  loading="lazy"
-                ></iframe>
+        <section class="panel">
+          <div class="form-shell">
+            <form id="inputForm">
+              <div class="field">
+                <label for="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                />
+                <p class="error-message" id="emailError" aria-live="polite"></p>
               </div>
-            </div>
+              <div class="field">
+                <label for="spotifyUrl">Spotify Playlist URL</label>
+                <input
+                  id="spotifyUrl"
+                  name="spotifyUrl"
+                  type="url"
+                  placeholder="https://open.spotify.com/playlist/..."
+                  required
+                />
+                <p
+                  class="error-message"
+                  id="spotifyUrlError"
+                  aria-live="polite"
+                ></p>
+              </div>
+              <button class="submit-btn" type="submit">Submit Playlist</button>
+            </form>
           </div>
-        </div>
-
-        <aside class="panel">
-          <section class="scale">
-            <h2>Emo Scale</h2>
-            <ul class="scale-list">
-              <li><strong>0% - 20%</strong> <span>Happy vibes ☀️</span></li>
-              <li>
-                <strong>20% - 40%</strong> <span>Slightly Emotional 🌤️</span>
-              </li>
-              <li><strong>40% - 60%</strong> <span>Sad 😔</span></li>
-              <li><strong>60% - 80%</strong> <span>Very Emo 🥀</span></li>
-              <li><strong>80% - 100%</strong> <span>Certified Emo 🖤</span></li>
-            </ul>
-          </section>
-          <section>
-            <div class="classification">
-              <small>How Emo You Truly Are…</small>
-              <p class="subtitle" id="comments">
-                Loading your emo way...
-              </p>
-            </div>
-          </section>
-        </aside>
+        </section>
       </section>
     </main>
 
+    <div
+      class="modal"
+      id="successModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="successModalTitle"
+      aria-describedby="successModalText"
+    >
+      <div class="modal-card">
+        <h2 class="modal-title" id="successModalTitle">Submission received</h2>
+        <p class="modal-text" id="successModalText"></p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn" id="successModalOkButton">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
-      const emoRate = 0.83;
-      const spotifyPlaylistId = "2gbmIBWWM0pRUdld8e7IEG";
-      const playlistComments = "Your playlist scored 0.83 'Certified Emo' with Imagine Dragons and Cage The Elephant? Honey, that's not emo, that's just the soundtrack to realizing your avocado isn't ripe yet. Even PXNDX is confused why 'Radioactive' is now classified as a deep, soul-crushing lament instead of a car commercial anthem.";
+      const form = document.getElementById("inputForm");
+      const emailInput = document.getElementById("email");
+      const spotifyUrlInput = document.getElementById("spotifyUrl");
+      const emailError = document.getElementById("emailError");
+      const spotifyUrlError = document.getElementById("spotifyUrlError");
+      const successModal = document.getElementById("successModal");
+      const successModalText = document.getElementById("successModalText");
+      const successModalOkButton = document.getElementById(
+        "successModalOkButton",
+      );
 
-      const classifications = [
-        { max: 0.2, label: "Happy Vibes ☀️" },
-        { max: 0.4, label: "Slightly Emotional 🌤️" },
-        { max: 0.6, label: "Sad 😔" },
-        { max: 0.8, label: "Very Emo 🥀" },
-        { max: 1.0, label: "Certified Emo 🖤" },
-      ];
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const spotifyPlaylistPattern =
+        /^https:\/\/open\.spotify\.com\/playlist\/[a-zA-Z0-9]+(\?.*)?$/;
 
-      const normalizedRate = Math.min(Math.max(emoRate, 0), 1);
-      const currentClassification =
-        classifications.find((item) => normalizedRate <= item.max) ||
-        classifications[classifications.length - 1];
+      function setFieldError(input, errorElement, message) {
+        input.classList.add("input-error");
+        errorElement.textContent = message;
+      }
 
-      document.getElementById("emoRateValue").textContent =
-        normalizedRate.toFixed(2) * 100 + "%";
-      document.getElementById("classificationText").textContent =
-        currentClassification.label;
-      document.getElementById("emoBarFill").style.width =
-        (normalizedRate * 100).toFixed(0) + "%";
-      document.getElementById("comments").textContent = playlistComments;
+      function clearFieldError(input, errorElement) {
+        input.classList.remove("input-error");
+        errorElement.textContent = "";
+      }
 
-      const playlistUrl =
-        "https://open.spotify.com/playlist/" + spotifyPlaylistId;
-      const playlistEmbedUrl =
-        "https://open.spotify.com/embed/playlist/" +
-        spotifyPlaylistId +
-        "?utm_source=generator";
-      const playlistLink = document.getElementById("playlistLink");
-      playlistLink.href = playlistUrl;
-      playlistLink.textContent = playlistUrl;
-      document.getElementById("playlistPreview").src = playlistEmbedUrl;
+      function clearSuccessMessage() {}
+
+      function resetFormAfterSuccess() {
+        form.reset();
+        clearFieldError(emailInput, emailError);
+        clearFieldError(spotifyUrlInput, spotifyUrlError);
+        clearSuccessMessage();
+      }
+
+      function closeSuccessModal() {
+        successModal.classList.remove("is-open");
+        resetFormAfterSuccess();
+      }
+
+      function openSuccessModal(email) {
+        successModalText.textContent =
+          "Your playlist is being analyzed. You will receive an email at " +
+          email +
+          " when it is ready.";
+        successModal.classList.add("is-open");
+      }
+
+      function validateEmail() {
+        const value = emailInput.value.trim();
+        if (!value) {
+          setFieldError(emailInput, emailError, "Email is required.");
+          return false;
+        }
+        if (!emailPattern.test(value)) {
+          setFieldError(
+            emailInput,
+            emailError,
+            "Enter a valid email, for example: you@example.com.",
+          );
+          return false;
+        }
+        clearFieldError(emailInput, emailError);
+        return true;
+      }
+
+      function validateSpotifyUrl() {
+        const value = spotifyUrlInput.value.trim();
+        if (!value) {
+          setFieldError(
+            spotifyUrlInput,
+            spotifyUrlError,
+            "Spotify playlist URL is required.",
+          );
+          return false;
+        }
+        if (!spotifyPlaylistPattern.test(value)) {
+          setFieldError(
+            spotifyUrlInput,
+            spotifyUrlError,
+            "Use a valid Spotify playlist URL from https://open.spotify.com/playlist/...",
+          );
+          return false;
+        }
+        clearFieldError(spotifyUrlInput, spotifyUrlError);
+        return true;
+      }
+
+      emailInput.addEventListener("input", validateEmail);
+      spotifyUrlInput.addEventListener("input", validateSpotifyUrl);
+      emailInput.addEventListener("input", clearSuccessMessage);
+      spotifyUrlInput.addEventListener("input", clearSuccessMessage);
+      successModalOkButton.addEventListener("click", closeSuccessModal);
+
+      successModal.addEventListener("click", (event) => {
+        if (event.target === successModal) {
+          closeSuccessModal();
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const isEmailValid = validateEmail();
+        const isSpotifyUrlValid = validateSpotifyUrl();
+
+        if (!isEmailValid || !isSpotifyUrlValid) {
+          clearSuccessMessage();
+          return;
+        }
+
+        const email = emailInput.value.trim();
+        const spotifyUrl = spotifyUrlInput.value.trim();
+
+        const targetUrl = new URL(
+          "http://127.0.0.1:5678/webhook-test/form-input",
+        );
+        targetUrl.searchParams.set("email", email);
+        targetUrl.searchParams.set("spotify_url", spotifyUrl);
+
+        openSuccessModal(email);
+
+        window.open(targetUrl.toString(), "_blank");
+      });
     </script>
   </body>
 </html>
