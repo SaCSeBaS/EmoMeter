@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emo Meter Results</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+    <style>
+      :root {
+        --bg: #09090d;
+        --panel: rgba(20, 20, 28, 0.78);
+        --panel-border: rgba(255, 255, 255, 0.08);
+        --text: #f2edf5;
+        --muted: #b3a9ba;
+        --accent: #ff4d8d;
+        --accent-soft: #7b3cff;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(123, 60, 255, 0.22),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 85% 15%,
+            rgba(255, 77, 141, 0.18),
+            transparent 28%
+          ),
+          linear-gradient(180deg, #14111d 0%, #09090d 45%, #040406 100%);
+        display: grid;
+        place-items: center;
+        padding: 32px 18px;
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(6px);
+      }
+
+      body::before {
+        width: 220px;
+        height: 220px;
+        top: 8%;
+        left: -60px;
+        border-radius: 50%;
+        background: rgba(255, 77, 141, 0.11);
+      }
+
+      body::after {
+        width: 260px;
+        height: 260px;
+        right: -70px;
+        bottom: 6%;
+        border-radius: 50%;
+        background: rgba(123, 60, 255, 0.12);
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        width: min(960px, 100%);
+        border: 1px solid var(--panel-border);
+        background: var(--panel);
+        backdrop-filter: blur(16px);
+        box-shadow: var(--shadow);
+        border-radius: 28px;
+        overflow: hidden;
+      }
+
+      .hero {
+        padding: 42px 28px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background:
+          linear-gradient(135deg, rgba(255, 77, 141, 0.1), transparent 40%),
+          linear-gradient(225deg, rgba(123, 60, 255, 0.16), transparent 50%);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.26em;
+        color: #d0c6d8;
+        font-size: 0.72rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.8rem, 9vw, 5.6rem);
+        line-height: 0.95;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        text-shadow: 0 0 24px rgba(255, 77, 141, 0.22);
+      }
+
+      .subtitle {
+        max-width: 60ch;
+        color: var(--muted);
+        font-size: 1.06rem;
+        line-height: 1.6;
+        margin: 18px 0 0;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 0;
+      }
+
+      .panel {
+        padding: 28px;
+      }
+
+      .panel + .panel {
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .meter-shell {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 22px;
+        padding: 24px;
+      }
+
+      .score {
+        display: flex;
+        align-items: end;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .score-value {
+        font-size: clamp(3rem, 9vw, 5rem);
+        line-height: 0.9;
+        color: #fff4fb;
+      }
+
+      .score-label {
+        color: var(--muted);
+        font-style: italic;
+        padding-bottom: 8px;
+      }
+
+      .bar {
+        width: 100%;
+        height: 18px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .bar-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(
+          90deg,
+          #ffd86b 0%,
+          #ff9f7a 20%,
+          #6a85ff 40%,
+          #3b0a45 60%,
+          #1a001a 80%,
+          #000000 100%
+        );
+        box-shadow: 0 0 20px rgba(255, 77, 141, 0.28);
+        transition: width 600ms ease;
+      }
+
+      .classification {
+        margin: 22px 0 0;
+        padding: 16px 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .classification small,
+      .playlist small,
+      .scale h2,
+      .config h2 {
+        display: block;
+        margin-bottom: 10px;
+        color: #d8d0df;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 0.74rem;
+      }
+
+      .classification strong {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .playlist {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .showcase {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.02)
+          ),
+          rgba(0, 0, 0, 0.22);
+      }
+
+      .showcase small {
+        display: block;
+        margin-bottom: 12px;
+        color: #d8d0df;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 0.74rem;
+      }
+
+      .showcase-frame {
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.35);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      iframe {
+        display: block;
+        width: 100%;
+        min-height: 352px;
+        border: 0;
+      }
+
+      a {
+        color: #ff9cbe;
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #ffd2e2;
+        text-decoration: underline;
+      }
+
+      .scale h2,
+      .config h2 {
+        margin-top: 0;
+      }
+
+      .scale-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+
+      .scale-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #eee7f1;
+        white-space: nowrap;
+      }
+
+      .scale-list strong,
+      .scale-list span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .scale-list span {
+        text-align: right;
+        color: var(--muted);
+      }
+
+      .config {
+        margin-top: 22px;
+        padding: 18px;
+        border-radius: 18px;
+        background: #08080c;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #f8d8e8;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .footer-note {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 0.94rem;
+        line-height: 1.6;
+      }
+
+      .new-analysis-btn {
+        margin-top: 18px;
+        width: 100%;
+        border: 0;
+        border-radius: 14px;
+        padding: 12px 14px;
+        color: #fff5fb;
+        font-size: 0.98rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+        box-shadow: 0 16px 30px rgba(123, 60, 255, 0.28);
+      }
+
+      .new-analysis-btn:hover {
+        filter: brightness(1.06);
+      }
+
+      @media (max-width: 950px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .panel + .panel {
+          border-left: 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero,
+        .panel {
+          padding: 24px 20px;
+        }
+
+        .meter-shell,
+        .showcase,
+        .config {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 620px) {
+        body {
+          padding: 18px 12px;
+        }
+
+        .card {
+          border-radius: 22px;
+        }
+
+        .hero {
+          padding: 22px 18px 20px;
+        }
+
+        .eyebrow {
+          letter-spacing: 0.18em;
+          font-size: 0.66rem;
+        }
+
+        h1 {
+          font-size: clamp(2.3rem, 15vw, 3.6rem);
+        }
+
+        .subtitle {
+          font-size: 0.96rem;
+          line-height: 1.5;
+        }
+
+        .panel {
+          padding: 18px;
+        }
+
+        .score {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+        }
+
+        .score-label {
+          padding-bottom: 0;
+        }
+
+        .classification strong {
+          font-size: 1.25rem;
+        }
+
+        .playlist a {
+          display: inline-block;
+          max-width: 100%;
+          overflow-wrap: anywhere;
+        }
+
+        .scale-list li {
+          gap: 8px;
+          padding: 10px 12px;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 420px) {
+        body {
+          padding: 12px 8px;
+        }
+
+        .hero,
+        .panel {
+          padding: 16px;
+        }
+
+        .meter-shell,
+        .showcase,
+        .config,
+        .classification,
+        .playlist {
+          padding: 14px;
+        }
+
+        .score-value {
+          font-size: 2.7rem;
+        }
+
+        .scale-list li {
+          font-size: 0.82rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <section class="hero">
+        <p class="eyebrow">Are you a true emo?</p>
+        <h1>Emo Meter</h1>
+        <p class="subtitle">
+          A dramatic little dashboard that judges your playlist and decides
+          whether you're glowing in the sun or staring out a rainy window
+          rewriting your soul in lowercase...
+        </p>
+      </section>
+
+      <section class="content">
+        <div class="panel">
+          <div class="meter-shell">
+            <div class="score">
+              <div class="score-value" id="emoRateValue">0.00</div>
+              <div class="score-label">E.R. (not emergency room, emo rate)</div>
+            </div>
+
+            <div class="bar" aria-label="Emo meter progress bar">
+              <div class="bar-fill" id="emoBarFill"></div>
+            </div>
+
+            <div class="classification">
+              <small>Your classification</small>
+              <strong id="classificationText">Loading mood...</strong>
+            </div>
+
+            <div class="playlist">
+              <small>Selected Spotify playlist</small>
+              <a id="playlistLink" href="#" target="_blank" rel="noreferrer"
+                >Open playlist</a
+              >
+            </div>
+
+            <div class="showcase">
+              <small>Playlist preview</small>
+              <div class="showcase-frame">
+                <iframe
+                  id="playlistPreview"
+                  title="Spotify playlist preview"
+                  allow="
+                    autoplay;
+                    clipboard-write;
+                    encrypted-media;
+                    fullscreen;
+                    picture-in-picture;
+                  "
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="new-analysis-btn"
+              id="newAnalysisButton"
+            >
+              New Analysis
+            </button>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <section class="scale">
+            <h2>Emo Scale</h2>
+            <ul class="scale-list">
+              <li><strong>0% - 20%</strong> <span>Happy vibes ☀️</span></li>
+              <li>
+                <strong>20% - 40%</strong> <span>Slightly Emotional 🌤️</span>
+              </li>
+              <li><strong>40% - 60%</strong> <span>Sad 😔</span></li>
+              <li><strong>60% - 80%</strong> <span>Very Emo 🥀</span></li>
+              <li><strong>80% - 100%</strong> <span>Certified Emo 🖤</span></li>
+            </ul>
+          </section>
+          <section>
+            <div class="classification">
+              <small>How Emo You Truly Are…</small>
+              <p class="subtitle" id="comments">Loading your emo way...</p>
+            </div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const emoRate = 0.90;
+      const spotifyPlaylistId = "3dqU6kjG86QMAyzvB380Xy";
+      const playlistComments = "A 90% Certified Emo score for a playlist with Florist and Sufjan Stevens? That's not a playlist; that's just an audible diary of your existential dread, perfectly curated for staring blankly out of a window while it rains. Are you okay, or is your therapist's number on speed dial right after 'Casimir Pulaski Day'?";
+
+      const classifications = [
+        { max: 0.2, label: "Happy Vibes ☀️" },
+        { max: 0.4, label: "Slightly Emotional 🌤️" },
+        { max: 0.6, label: "Sad 😔" },
+        { max: 0.8, label: "Very Emo 🥀" },
+        { max: 1.0, label: "Certified Emo 🖤" },
+      ];
+
+      const normalizedRate = Math.min(Math.max(emoRate, 0), 1);
+      const currentClassification =
+        classifications.find((item) => normalizedRate <= item.max) ||
+        classifications[classifications.length - 1];
+
+      document.getElementById("emoRateValue").textContent =
+        normalizedRate.toFixed(2) * 100 + "%";
+      document.getElementById("classificationText").textContent =
+        currentClassification.label;
+      document.getElementById("emoBarFill").style.width =
+        (normalizedRate * 100).toFixed(0) + "%";
+      document.getElementById("comments").textContent = playlistComments;
+
+      const playlistUrl =
+        "https://open.spotify.com/playlist/" + spotifyPlaylistId;
+      const playlistEmbedUrl =
+        "https://open.spotify.com/embed/playlist/" +
+        spotifyPlaylistId +
+        "?utm_source=generator";
+      const playlistLink = document.getElementById("playlistLink");
+      playlistLink.href = playlistUrl;
+      playlistLink.textContent = playlistUrl;
+      document.getElementById("playlistPreview").src = playlistEmbedUrl;
+
+      document
+        .getElementById("newAnalysisButton")
+        .addEventListener("click", () => {
+          window.location.href = "../index.html";
+        });
+    </script>
+  </body>
+</html>
